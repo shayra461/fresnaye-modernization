@@ -36,13 +36,13 @@ export default function Navbar() {
           : "bg-navy/80 backdrop-blur-md"
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between h-16 lg:h-20">
+      <div className="container mx-auto px-6 flex items-center justify-between h-20 lg:h-24">
         {/* Logo */}
         <Link to="/" className="flex items-center group">
           <img
             src={fresnayelogo}
             alt="Fresnaye & Company"
-            className="h-12 lg:h-14 w-auto object-contain brightness-200"
+            className="h-16 lg:h-20 w-auto object-contain brightness-200"
           />
         </Link>
 
