@@ -1,3 +1,4 @@
+import React from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 import people1 from "@/assets/people-1.jpg";
 import people2 from "@/assets/people-2.jpg";
@@ -35,6 +36,94 @@ const services = [
     desc: "We bring an unrivaled skill to integrate structure, process optimization, and people for a holistic impact.",
   },
 ];
+
+// Interactive services component
+function ServicesInteractive({ services }: { services: { icon: React.ElementType; title: string; desc: string }[] }) {
+  const [active, setActive] = useState(0);
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-0 border border-white/10">
+      {/* Left: tab list */}
+      <div className="lg:col-span-2 flex flex-col border-r border-white/10">
+        {services.map((svc, i) => (
+          <button
+            key={svc.title}
+            onClick={() => setActive(i)}
+            className={`group relative flex items-center gap-5 px-8 py-7 text-left transition-all duration-300 border-b border-white/10 last:border-b-0 ${
+              active === i
+                ? "bg-teal/10"
+                : "hover:bg-white/5"
+            }`}
+          >
+            {/* Active indicator bar */}
+            <div className={`absolute left-0 top-0 bottom-0 w-0.5 transition-all duration-300 ${active === i ? "bg-teal" : "bg-transparent"}`} />
+
+            {/* Number */}
+            <span className={`font-display text-4xl font-bold leading-none transition-colors duration-300 ${active === i ? "text-teal" : "text-white/15 group-hover:text-white/30"}`}>
+              {String(i + 1).padStart(2, "0")}
+            </span>
+
+            <div>
+              <div className={`flex items-center gap-2 mb-1 transition-colors duration-300 ${active === i ? "text-white" : "text-white/55 group-hover:text-white/80"}`}>
+                <svc.icon size={14} />
+                <span className="font-body text-[10px] uppercase tracking-[0.25em] font-semibold">{svc.title}</span>
+              </div>
+              {/* Progress line under active */}
+              {active === i && (
+                <div className="h-px bg-teal/40 w-full animate-fade-in" />
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* Right: content panel */}
+      <div className="lg:col-span-3 relative overflow-hidden">
+        {/* Big decorative number background */}
+        <div className="absolute top-4 right-4 font-display text-[12rem] font-bold text-white/[0.03] leading-none select-none pointer-events-none">
+          {String(active + 1).padStart(2, "0")}
+        </div>
+
+        <div key={active} className="relative p-10 lg:p-14 animate-fade-in flex flex-col h-full justify-between min-h-[320px]">
+          <div>
+            {/* Icon */}
+            <div className="w-14 h-14 border border-teal/30 flex items-center justify-center mb-8 bg-teal/5">
+              {(() => { const Icon = services[active].icon; return <Icon size={22} className="text-teal" />; })()}
+            </div>
+
+            <h3 className="font-display text-4xl md:text-5xl text-white font-light leading-tight mb-6">
+              {services[active].title}
+            </h3>
+
+            <p className="font-body text-white/60 leading-relaxed text-base max-w-lg">
+              {services[active].desc}
+            </p>
+          </div>
+
+          {/* Bottom row */}
+          <div className="mt-10 flex items-center justify-between pt-8 border-t border-white/10">
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-2 text-teal font-body text-xs font-semibold uppercase tracking-widest hover:gap-4 transition-all duration-200"
+            >
+              Explore this service <ArrowRight size={13} />
+            </Link>
+            {/* Dots navigation */}
+            <div className="flex gap-2">
+              {services.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActive(i)}
+                  className={`transition-all duration-300 ${i === active ? "w-6 h-1.5 bg-teal" : "w-1.5 h-1.5 bg-white/25 hover:bg-white/50"}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // Scrolling ticker component
 function IndustryTicker({ industries }: { industries: { label: string; href: string | null }[] }) {
@@ -168,35 +257,51 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Services */}
-      <section className="py-28 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="max-w-2xl mb-16">
-            <div className="section-divider" />
-            <h2 className="font-display text-4xl md:text-5xl text-foreground font-light mb-6">
-              What We <em>Do</em>
-            </h2>
-            <p className="font-body text-muted-foreground leading-relaxed">
+      {/* Services — Interactive tabbed layout */}
+      <section className="relative overflow-hidden bg-navy-dark">
+        {/* Subtle diagonal texture */}
+        <div className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: "repeating-linear-gradient(45deg, hsl(175 70% 41%) 0px, hsl(175 70% 41%) 1px, transparent 1px, transparent 60px)",
+          }}
+        />
+
+        <div className="relative container mx-auto px-6 py-28">
+          {/* Header row */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+            <div>
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-14 h-px bg-teal" />
+                <span className="font-body text-xs uppercase tracking-[0.3em] text-teal font-semibold">Core Capabilities</span>
+              </div>
+              <h2 className="font-display text-5xl md:text-6xl text-white font-light leading-tight">
+                What We <em className="font-semibold italic text-teal">Do</em>
+              </h2>
+            </div>
+            <p className="font-body text-white/55 leading-relaxed max-w-sm text-sm md:text-right">
               We deliver strategic advantage across multiple disciplines, combining decades of expertise with a truly global perspective.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.map((svc) => (
-              <div
-                key={svc.title}
-                className="group p-8 bg-card border border-border hover:border-teal/40 transition-all duration-300 shadow-card hover:shadow-elevated"
-              >
-                <div className="w-10 h-10 rounded-full bg-teal/10 flex items-center justify-center mb-6 group-hover:bg-teal/20 transition-colors">
-                  <svc.icon size={18} className="text-teal" />
-                </div>
-                <h3 className="font-display text-2xl text-foreground font-medium mb-4">{svc.title}</h3>
-                <p className="font-body text-sm text-muted-foreground leading-relaxed">{svc.desc}</p>
-                <div className="mt-6 flex items-center gap-2 text-teal font-body text-xs font-semibold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Link to="/services">Learn more</Link>
-                  <ArrowRight size={12} />
-                </div>
-              </div>
-            ))}
+
+          {/* Interactive service cards */}
+          <ServicesInteractive services={services} />
+
+          {/* Bottom CTA row */}
+          <div className="mt-16 pt-10 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <p className="font-body text-sm text-white/45 italic">
+              Discover our full range of advisory services →
+            </p>
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-3 group"
+            >
+              <span className="font-body text-sm font-semibold text-white uppercase tracking-[0.15em] group-hover:text-teal transition-colors">
+                View All Services
+              </span>
+              <span className="flex items-center justify-center w-9 h-9 border border-teal/50 text-teal group-hover:bg-teal group-hover:border-teal group-hover:text-white transition-all duration-200">
+                <ArrowRight size={14} />
+              </span>
+            </Link>
           </div>
         </div>
       </section>
