@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { ArrowRight, Globe, Building2, TrendingUp } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const industries = [
   { label: "Healthcare", href: null },
@@ -34,6 +35,66 @@ const services = [
     desc: "We bring an unrivaled skill to integrate structure, process optimization, and people for a holistic impact.",
   },
 ];
+
+// Scrolling ticker component
+function IndustryTicker({ industries }: { industries: { label: string; href: string | null }[] }) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  // Duplicate items for seamless loop
+  const doubled = [...industries, ...industries];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIdx((i) => (i + 1) % industries.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [industries.length]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    let pos = 0;
+    let raf: number;
+    const step = () => {
+      pos += 0.6;
+      const half = track.scrollWidth / 2;
+      if (pos >= half) pos = 0;
+      track.style.transform = `translateX(-${pos}px)`;
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  return (
+    <div className="flex items-center h-full py-3">
+      <div ref={trackRef} className="flex items-center gap-0 will-change-transform">
+        {doubled.map((ind, i) => {
+          const isActive = i % industries.length === activeIdx;
+          const El = ind.href ? "a" : "span";
+          const extraProps = ind.href
+            ? { href: ind.href, target: "_blank", rel: "noopener noreferrer" }
+            : {};
+          return (
+            <El
+              key={i}
+              {...(extraProps as any)}
+              className={`flex-shrink-0 mx-2 px-5 py-1.5 font-body text-xs font-medium tracking-widest uppercase transition-all duration-500 ${
+                isActive
+                  ? "bg-teal text-white shadow-teal scale-105"
+                  : ind.href
+                  ? "border border-teal/40 text-teal/80 hover:border-teal hover:text-teal"
+                  : "border border-white/15 text-white/45"
+              }`}
+            >
+              {ind.label}
+            </El>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function Index() {
   return (
@@ -81,33 +142,27 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Industry tags */}
-        <div className="absolute bottom-0 left-0 right-0 bg-navy/90 backdrop-blur-sm border-t border-white/10 py-6">
-          <div className="container mx-auto px-6">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="font-body text-xs uppercase tracking-[0.2em] text-white/50 font-medium mr-2">
-                Our industry specialization:
+        {/* Industry tags — dynamic scrolling ticker */}
+        <div className="absolute bottom-0 left-0 right-0 bg-navy-dark/95 backdrop-blur-sm border-t border-teal/20 overflow-hidden">
+          {/* Top teal line accent */}
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-teal to-transparent opacity-60" />
+
+          <div className="flex items-stretch">
+            {/* Left label — fixed */}
+            <div className="flex-shrink-0 flex items-center gap-3 px-6 py-4 border-r border-white/10 bg-teal/10">
+              <div className="w-1.5 h-1.5 rounded-full bg-teal animate-pulse" />
+              <span className="font-body text-[10px] uppercase tracking-[0.3em] text-teal font-semibold whitespace-nowrap">
+                Industry Specialization
               </span>
-              {industries.map((ind) =>
-                ind.href ? (
-                  <a
-                    key={ind.label}
-                    href={ind.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-body text-xs font-medium px-4 py-1.5 border border-teal/50 text-teal hover:bg-teal hover:text-white transition-all duration-200 tracking-wide"
-                  >
-                    {ind.label}
-                  </a>
-                ) : (
-                  <span
-                    key={ind.label}
-                    className="font-body text-xs font-medium px-4 py-1.5 border border-white/20 text-white/60 tracking-wide"
-                  >
-                    {ind.label}
-                  </span>
-                )
-              )}
+            </div>
+
+            {/* Scrolling track */}
+            <div className="flex-1 overflow-hidden relative">
+              {/* Fade edges */}
+              <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-navy-dark/95 to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-navy-dark/95 to-transparent z-10 pointer-events-none" />
+
+              <IndustryTicker industries={industries} />
             </div>
           </div>
         </div>
