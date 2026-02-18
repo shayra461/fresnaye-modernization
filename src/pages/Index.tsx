@@ -147,35 +147,95 @@ export default function Index() {
       </section>
 
       {/* People section */}
-      <section className="py-28 bg-muted">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <div className="section-divider" />
-              <h2 className="font-display text-4xl md:text-5xl text-foreground font-light mb-6">
-                We bring the right <em>people together</em>
+      <section className="relative overflow-hidden" style={{ background: "var(--gradient-section)" }}>
+        {/* Decorative background grid */}
+        <div className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage: "linear-gradient(hsl(175 70% 41%) 1px, transparent 1px), linear-gradient(90deg, hsl(175 70% 41%) 1px, transparent 1px)",
+            backgroundSize: "60px 60px"
+          }}
+        />
+
+        <div className="relative container mx-auto px-6 py-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[600px]">
+
+            {/* Left: Text content */}
+            <div className="flex flex-col justify-center py-24 pr-0 lg:pr-16">
+              {/* Accent line */}
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-14 h-px bg-teal" />
+                <span className="font-body text-xs uppercase tracking-[0.3em] text-teal font-semibold">Our Approach</span>
+              </div>
+
+              <h2 className="font-display text-5xl md:text-6xl text-white font-light leading-tight mb-8">
+                We bring the<br />
+                right <em className="text-teal not-italic font-semibold">people</em><br />
+                <em>together</em>
               </h2>
-              <p className="font-body text-muted-foreground leading-relaxed text-base mb-8">
+
+              <p className="font-body text-white/65 leading-relaxed text-base mb-10 max-w-md">
                 Setting and implementing the right strategy is imperative for our clients. After determining your goals, we help you develop a plan that targets the right audience through the right channels at the right time.
               </p>
+
+              {/* Inline stats */}
+              <div className="flex gap-10 mb-10 border-l-2 border-teal pl-6">
+                <div>
+                  <div className="font-display text-3xl text-white font-semibold">50<span className="text-teal">+</span></div>
+                  <div className="font-body text-xs text-white/50 uppercase tracking-wider mt-1">Years Experience</div>
+                </div>
+                <div>
+                  <div className="font-display text-3xl text-white font-semibold">30<span className="text-teal">+</span></div>
+                  <div className="font-body text-xs text-white/50 uppercase tracking-wider mt-1">Countries Served</div>
+                </div>
+                <div>
+                  <div className="font-display text-3xl text-white font-semibold">100<span className="text-teal">+</span></div>
+                  <div className="font-body text-xs text-white/50 uppercase tracking-wider mt-1">Global Partners</div>
+                </div>
+              </div>
+
               <Link
                 to="/team"
-                className="inline-flex items-center gap-2 bg-navy text-white font-body text-sm font-medium px-8 py-3.5 hover:bg-navy-mid transition-colors duration-200"
+                className="inline-flex items-center gap-3 group self-start"
               >
-                Meet Our Leadership <ArrowRight size={16} />
+                <span className="flex items-center justify-center w-11 h-11 border border-teal text-teal group-hover:bg-teal group-hover:text-white transition-all duration-200">
+                  <ArrowRight size={16} />
+                </span>
+                <span className="font-body text-sm font-semibold text-white uppercase tracking-[0.15em] group-hover:text-teal transition-colors">
+                  Meet Our Leadership
+                </span>
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <img
-                src={people1}
-                alt="Business consulting professionals"
-                className="w-full h-64 object-cover shadow-card"
-              />
-              <img
-                src={people2}
-                alt="Business consulting team"
-                className="w-full h-64 object-cover shadow-card mt-8"
-              />
+
+            {/* Right: Image composition */}
+            <div className="relative hidden lg:flex items-stretch">
+              {/* Tall primary image — flush to right edge */}
+              <div className="absolute right-0 top-0 bottom-0 w-[55%] overflow-hidden">
+                <img
+                  src={people2}
+                  alt="Business consulting team"
+                  className="w-full h-full object-cover opacity-80"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-navy/80 to-transparent" />
+              </div>
+
+              {/* Overlapping smaller image — left, vertically centered */}
+              <div className="absolute left-6 top-1/2 -translate-y-1/2 w-[48%] aspect-[4/3] overflow-hidden shadow-elevated border-2 border-navy-dark">
+                <img
+                  src={people1}
+                  alt="Business consulting professionals"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent" />
+              </div>
+
+              {/* Floating badge */}
+              <div className="absolute bottom-12 right-6 bg-teal px-6 py-4 shadow-teal">
+                <div className="font-display text-3xl text-white font-bold leading-none">8<span className="text-white/70 text-lg">+</span></div>
+                <div className="font-body text-[10px] text-white/80 uppercase tracking-widest mt-1">Industries</div>
+              </div>
+
+              {/* Decorative teal corner accent */}
+              <div className="absolute top-12 right-6 w-16 h-16 border-t-2 border-r-2 border-teal/40" />
             </div>
           </div>
         </div>
