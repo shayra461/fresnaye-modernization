@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import heroBg from "@/assets/hero-bg.jpg";
+import fresnayelogo from "@/assets/fresnaye-logo.png";
 import { Lock } from "lucide-react";
 import { useState } from "react";
 
@@ -21,14 +22,11 @@ export default function Login() {
         <div className="w-full max-w-md">
           {/* Logo mark */}
           <div className="text-center mb-10">
-            <div className="inline-flex flex-col items-center">
-              <span className="font-display text-5xl font-semibold text-white tracking-wide mb-1">
-                F<span className="text-teal">&</span>C
-              </span>
-              <span className="font-body text-[10px] uppercase tracking-[0.3em] text-white/60 font-light">
-                Fresnaye & Company
-              </span>
-            </div>
+            <img
+              src={fresnayelogo}
+              alt="Fresnaye & Company"
+              className="h-20 w-auto object-contain brightness-200 mx-auto"
+            />
           </div>
 
           {/* Login card */}

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import fresnayelogo from "@/assets/fresnaye-logo.png";
 
 const subsidiaries = [
   { name: "502 Notary", url: "http://502notary.com/" },
@@ -13,15 +14,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex flex-col leading-none">
-                <span className="font-display text-3xl font-semibold text-white tracking-wide">
-                  F<span className="text-teal">&</span>C
-                </span>
-                <span className="font-body text-[9px] uppercase tracking-[0.25em] text-white/50 font-light">
-                  Fresnaye & Company
-                </span>
-              </div>
+            <div className="mb-6">
+              <img
+                src={fresnayelogo}
+                alt="Fresnaye & Company"
+                className="h-16 w-auto object-contain brightness-200"
+              />
             </div>
             <p className="font-body text-sm text-white/60 leading-relaxed max-w-sm">
               A global firm specializing in accelerating innovation & growth to move the world forward.
