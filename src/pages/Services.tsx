@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import { TrendingUp, Building2, Globe, Users, BarChart3, Shield, ArrowRight, MoveRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import heroServices from "@/assets/hero-services.jpg";
 
 const services = [
   {
@@ -163,7 +164,20 @@ export default function ServicesPage() {
       <Navbar />
 
       {/* Page Hero */}
-      <div ref={heroRef} className="pt-20 bg-navy-dark relative overflow-hidden">
+      <div ref={heroRef} className="pt-20 relative overflow-hidden">
+        {/* Background image with ken-burns */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${heroServices})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            animation: "ken-burns 20s ease-in-out infinite",
+            willChange: "transform",
+          }}
+        />
+        {/* Dark overlay */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, hsl(220 60% 8% / 0.95) 0%, hsl(218 55% 14% / 0.82) 60%, hsl(175 70% 41% / 0.2) 100%)" }} />
         {/* Animated background grid */}
         <div className="absolute inset-0 opacity-[0.04]"
           style={{ backgroundImage: "linear-gradient(hsl(175 70% 41%) 1px, transparent 1px), linear-gradient(90deg, hsl(175 70% 41%) 1px, transparent 1px)", backgroundSize: "60px 60px" }}
