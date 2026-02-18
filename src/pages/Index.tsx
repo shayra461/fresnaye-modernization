@@ -37,7 +37,54 @@ const services = [
   },
 ];
 
-// Interactive services component
+// Leadership typewriter display component
+function LeadershipTypewriter() {
+  const words = ["Leadership Team", "Acceleration Team", "Global Directors", "Board of Advisors"];
+  const typed = useTypewriter(words, 75, 2200);
+  return (
+    <div className="relative">
+      <span className="font-display text-5xl md:text-6xl font-semibold italic leading-tight" style={{ color: "hsl(var(--teal))" }}>
+        {typed}
+        <span className="inline-block w-0.5 h-[0.85em] bg-teal align-middle ml-1 animate-[blink_1s_step-end_infinite]" />
+      </span>
+    </div>
+  );
+}
+
+// Typewriter hook
+function useTypewriter(words: string[], speed = 80, pause = 2000) {
+  const [displayed, setDisplayed] = useState("");
+  const [wordIdx, setWordIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = words[wordIdx];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!deleting && charIdx <= current.length) {
+      timeout = setTimeout(() => {
+        setDisplayed(current.slice(0, charIdx));
+        setCharIdx((c) => c + 1);
+      }, speed);
+    } else if (!deleting && charIdx > current.length) {
+      timeout = setTimeout(() => setDeleting(true), pause);
+    } else if (deleting && charIdx >= 0) {
+      timeout = setTimeout(() => {
+        setDisplayed(current.slice(0, charIdx));
+        setCharIdx((c) => c - 1);
+      }, speed / 2);
+    } else {
+      setDeleting(false);
+      setWordIdx((w) => (w + 1) % words.length);
+    }
+    return () => clearTimeout(timeout);
+  }, [charIdx, deleting, wordIdx, words, speed, pause]);
+
+  return displayed;
+}
+
+
 function ServicesInteractive({ services }: { services: { icon: React.ElementType; title: string; desc: string }[] }) {
   const [active, setActive] = useState(0);
 
@@ -432,24 +479,79 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Leadership teaser */}
-      <section className="py-28 bg-background">
-        <div className="container mx-auto px-6 text-center">
-          <div className="flex justify-center mb-6">
-            <div className="w-12 h-0.5 bg-teal" />
+      {/* Leadership teaser — creative typing section */}
+      <section className="relative overflow-hidden bg-background">
+        {/* Asymmetric split background */}
+        <div className="absolute inset-y-0 right-0 w-1/2 bg-navy-dark hidden lg:block" />
+
+        <div className="relative container mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[480px]">
+
+            {/* Left — text content */}
+            <div className="flex flex-col justify-center py-24 pr-0 lg:pr-16">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-14 h-px bg-teal" />
+                <span className="font-body text-[10px] uppercase tracking-[0.3em] text-teal font-semibold">Our People</span>
+              </div>
+
+              <h2 className="font-display text-5xl md:text-6xl text-foreground font-light leading-tight mb-4">
+                Our
+              </h2>
+
+              {/* Typewriter line */}
+              <LeadershipTypewriter />
+
+              <p className="font-body text-muted-foreground leading-relaxed text-base mt-8 mb-10 max-w-md">
+                Fresnaye & Company is led by our Global Managing Director & our elected board of directors. A global leadership team known as the Acceleration Team oversees subsidiary & regional operations along with the leaders of our offices and practices.
+              </p>
+
+              <Link
+                to="/team"
+                className="inline-flex items-center gap-3 group self-start"
+              >
+                <span className="flex items-center justify-center w-11 h-11 border border-navy text-navy group-hover:bg-navy group-hover:text-white transition-all duration-200">
+                  <ArrowRight size={16} />
+                </span>
+                <span className="font-body text-sm font-semibold text-foreground uppercase tracking-[0.15em] group-hover:text-teal transition-colors">
+                  Meet our team
+                </span>
+              </Link>
+            </div>
+
+            {/* Right — dark panel with role cards */}
+            <div className="hidden lg:flex flex-col justify-center py-24 pl-14">
+              <div className="space-y-4">
+                {[
+                  { role: "Global Managing Director", desc: "Setting the strategic vision and direction of the firm globally." },
+                  { role: "Board of Directors", desc: "Elected governance body overseeing firm-wide accountability." },
+                  { role: "Acceleration Team", desc: "Global leadership overseeing subsidiaries, regions & practices." },
+                ].map((item, i) => (
+                  <div
+                    key={item.role}
+                    className="group flex items-start gap-5 p-5 border border-white/8 hover:border-teal/40 transition-all duration-300 hover:bg-teal/5"
+                    style={{ animationDelay: `${i * 150}ms` }}
+                  >
+                    <span className="font-display text-2xl text-teal/30 font-bold leading-none flex-shrink-0 pt-1 group-hover:text-teal transition-colors">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <div className="font-body text-xs uppercase tracking-[0.2em] text-white font-semibold mb-1.5 group-hover:text-teal transition-colors">
+                        {item.role}
+                      </div>
+                      <p className="font-body text-xs text-white/45 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Decorative corner */}
+              <div className="mt-10 flex items-center gap-3">
+                <div className="w-8 h-0.5 bg-teal/40" />
+                <span className="font-body text-[10px] uppercase tracking-widest text-white/30">Est. Leadership</span>
+              </div>
+            </div>
+
           </div>
-          <h2 className="font-display text-4xl md:text-5xl text-foreground font-light mb-6">
-            Our <em>Leadership Team</em>
-          </h2>
-          <p className="font-body text-muted-foreground leading-relaxed text-base mb-10 max-w-2xl mx-auto">
-            Fresnaye & Company is led by our Global Managing Director & our elected board of directors. A global leadership team known as the Acceleration Team oversees subsidiary & regional operations along with the leaders of our offices and practices.
-          </p>
-          <Link
-            to="/team"
-            className="inline-flex items-center gap-2 border border-navy text-navy font-body text-sm font-medium px-8 py-3.5 hover:bg-navy hover:text-white transition-all duration-200"
-          >
-            Meet our team <ArrowRight size={16} />
-          </Link>
         </div>
       </section>
 
