@@ -1,6 +1,7 @@
 {
   "name": "vite_react_shadcn_ts",
   "private": true,
+  "homepage": "https://shayra461.github.io/fresnaye-modernization/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
