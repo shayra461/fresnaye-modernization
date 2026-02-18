@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import heroTeam from "@/assets/hero-team.jpg";
 
 const leadership = [
   {
@@ -27,21 +28,40 @@ export default function TeamPage() {
       <Navbar />
 
       {/* Page Hero */}
-      <div className="pt-20 bg-navy-dark">
-        <div className="container mx-auto px-6 py-24">
-          <div className="flex items-center gap-3 mb-6">
+      <div className="pt-20 relative overflow-hidden">
+        {/* Background image */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${heroTeam})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            animation: "ken-burns 22s ease-in-out infinite",
+            willChange: "transform",
+          }}
+        />
+        {/* Dark overlay */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, hsl(220 60% 8% / 0.93) 0%, hsl(218 55% 14% / 0.78) 55%, hsl(220 30% 10% / 0.85) 100%)" }} />
+        {/* Subtle grid */}
+        <div className="absolute inset-0 opacity-[0.03]"
+          style={{ backgroundImage: "linear-gradient(hsl(175 70% 41%) 1px, transparent 1px), linear-gradient(90deg, hsl(175 70% 41%) 1px, transparent 1px)", backgroundSize: "80px 80px" }}
+        />
+        <div className="container mx-auto px-6 py-28 relative">
+          <div className="flex items-center gap-3 mb-6" style={{ animation: "fade-in 0.6s ease both" }}>
             <div className="w-12 h-px bg-teal" />
             <span className="font-body text-xs uppercase tracking-[0.3em] text-teal font-medium">
               Our People
             </span>
           </div>
-          <h1 className="font-display text-5xl md:text-6xl text-white font-light mb-6">
+          <h1 className="font-display text-5xl md:text-6xl text-white font-light mb-6" style={{ animation: "fade-in 0.7s ease 0.1s both" }}>
             Leadership <em>Team</em>
           </h1>
-          <p className="font-body text-white/65 text-lg max-w-2xl leading-relaxed">
+          <p className="font-body text-white/65 text-lg max-w-2xl leading-relaxed" style={{ animation: "fade-in 0.7s ease 0.2s both" }}>
             Fresnaye & Company is led by our Global Managing Director & our elected board of directors. A global leadership team known as the Acceleration Team oversees subsidiary & regional operations along with the leaders of our offices and practices.
           </p>
         </div>
+        {/* Bottom gradient fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-20" style={{ background: "linear-gradient(to bottom, transparent, hsl(220 20% 97%))" }} />
       </div>
 
       {/* Leadership structure */}
