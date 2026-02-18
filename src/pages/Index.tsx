@@ -238,14 +238,34 @@ export default function Index() {
       <Navbar />
 
       {/* Hero */}
-      <section
-        className="relative min-h-screen flex items-center"
-        style={{
-          backgroundImage: `var(--gradient-hero), url(${heroBg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Ken-Burns background image */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${heroBg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            animation: "ken-burns 20s ease-in-out infinite",
+            willChange: "transform",
+          }}
+        />
+        {/* Overlay gradient */}
+        <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
+        {/* Animated floating particles */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full border border-teal/10"
+            style={{ animation: "pulse-ring 6s ease-in-out infinite" }} />
+          <div className="absolute top-1/3 right-1/3 w-32 h-32 rounded-full border border-white/5"
+            style={{ animation: "pulse-ring 8s ease-in-out infinite 1s" }} />
+          <div className="absolute bottom-1/3 right-1/5 w-2 h-2 rounded-full bg-teal/50"
+            style={{ animation: "float-y 4s ease-in-out infinite" }} />
+          <div className="absolute top-2/3 right-2/5 w-1 h-1 rounded-full bg-white/40"
+            style={{ animation: "float-y 5s ease-in-out infinite 0.5s" }} />
+          <div className="absolute top-1/2 right-1/6 w-1.5 h-1.5 rounded-full bg-teal/40"
+            style={{ animation: "float-x 6s ease-in-out infinite 1s" }} />
+        </div>
+
         <div className="container mx-auto px-6 pt-20">
           <div className="max-w-3xl animate-fade-up">
             <div className="flex items-center gap-3 mb-8">
@@ -449,14 +469,34 @@ export default function Index() {
       </section>
 
       {/* Global network */}
-      <section
-        className="py-28"
-        style={{ background: "var(--gradient-section)" }}
-      >
-        <div className="container mx-auto px-6">
+      <section className="relative overflow-hidden py-28" style={{ background: "var(--gradient-section)" }}>
+        {/* Animated orbital rings */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-[600px] h-[600px] rounded-full border border-teal/5"
+            style={{ animation: "spin-slow 40s linear infinite" }} />
+          <div className="absolute w-[400px] h-[400px] rounded-full border border-teal/8"
+            style={{ animation: "spin-slow 30s linear infinite reverse" }} />
+          <div className="absolute w-[200px] h-[200px] rounded-full border border-teal/10"
+            style={{ animation: "spin-slow 20s linear infinite" }} />
+          {/* Dot on ring */}
+          <div className="absolute w-[600px] h-[600px] rounded-full"
+            style={{ animation: "spin-slow 40s linear infinite" }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-teal/60" />
+          </div>
+          <div className="absolute w-[400px] h-[400px] rounded-full"
+            style={{ animation: "spin-slow 30s linear infinite reverse" }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/40" />
+          </div>
+        </div>
+
+        <div className="relative container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
             <div className="flex justify-center mb-6">
-              <div className="w-12 h-0.5 bg-teal" />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-px bg-teal/50" />
+                <div className="w-1.5 h-1.5 rounded-full bg-teal" style={{ animation: "pulse-ring 2s ease-in-out infinite" }} />
+                <div className="w-8 h-px bg-teal/50" />
+              </div>
             </div>
             <h2 className="font-display text-4xl md:text-5xl text-white font-light mb-6">
               Global Network of <em>Trusted Partners</em>
@@ -464,20 +504,49 @@ export default function Index() {
             <p className="font-body text-white/70 leading-relaxed text-base mb-16">
               Comprised of an exclusive group of senior-level counselors, we work with some of the world's most established international organizations, individuals, businesses and government agencies striving to drive impact and social purpose.
             </p>
-            <div className="grid grid-cols-2 gap-px bg-white/10">
+
+            {/* Animated stats */}
+            <div className="grid grid-cols-2 gap-px bg-white/10 mb-10">
               {[
-                { num: "50+", label: "Global Partners" },
-                { num: "12+", label: "Global Offices" },
+                { num: "50+", label: "Global Partners", delay: "0s" },
+                { num: "12+", label: "Global Offices", delay: "0.2s" },
               ].map((stat) => (
-                <div key={stat.label} className="bg-navy-mid py-12 px-8">
-                  <div className="font-display text-6xl text-teal font-semibold mb-2">{stat.num}</div>
-                  <div className="font-body text-sm uppercase tracking-[0.2em] text-white/60 font-medium">{stat.label}</div>
+                <div key={stat.label} className="relative bg-navy-mid py-14 px-8 overflow-hidden group">
+                  {/* Animated bg glow */}
+                  <div className="absolute inset-0 bg-teal/0 group-hover:bg-teal/5 transition-colors duration-700" />
+                  {/* Corner accent */}
+                  <div className="absolute top-3 right-3 w-8 h-8 border-t border-r border-teal/20"
+                    style={{ animation: `float-y 5s ease-in-out infinite ${stat.delay}` }} />
+                  <div
+                    className="font-display text-7xl text-teal font-bold mb-3"
+                    style={{ animation: `count-up 0.8s ease-out ${stat.delay} both` }}
+                  >
+                    {stat.num}
+                  </div>
+                  <div className="font-body text-xs uppercase tracking-[0.3em] text-white/55 font-semibold">{stat.label}</div>
+                  {/* Bottom line animation */}
+                  <div className="absolute bottom-0 left-0 h-0.5 bg-teal/40"
+                    style={{ animation: `line-grow 3s ease-in-out infinite alternate ${stat.delay}` }} />
                 </div>
+              ))}
+            </div>
+
+            {/* Floating tags */}
+            <div className="flex justify-center gap-4 flex-wrap">
+              {["30+ Countries", "8 Industries", "Nearly 50 Years"].map((tag, i) => (
+                <span
+                  key={tag}
+                  className="font-body text-[10px] uppercase tracking-[0.2em] text-teal/70 border border-teal/20 px-4 py-2"
+                  style={{ animation: `float-y ${5 + i}s ease-in-out infinite ${i * 0.4}s` }}
+                >
+                  {tag}
+                </span>
               ))}
             </div>
           </div>
         </div>
       </section>
+
 
       {/* Leadership teaser — creative typing section */}
       <section className="relative overflow-hidden bg-background">
