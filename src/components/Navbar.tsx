@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
+import fresnayelogo from "@/assets/fresnaye-logo.png";
 
 const subsidiaries = [
   { name: "502 Notary", url: "http://502notary.com/" },
@@ -37,15 +38,12 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-6 flex items-center justify-between h-16 lg:h-20">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="flex flex-col leading-none">
-            <span className="font-display text-2xl font-semibold text-white tracking-wide">
-              F<span className="text-teal">&</span>C
-            </span>
-            <span className="font-body text-[9px] uppercase tracking-[0.25em] text-white/60 font-light">
-              Fresnaye & Company
-            </span>
-          </div>
+        <Link to="/" className="flex items-center group">
+          <img
+            src={fresnayelogo}
+            alt="Fresnaye & Company"
+            className="h-12 lg:h-14 w-auto object-contain brightness-200"
+          />
         </Link>
 
         {/* Desktop Nav */}
