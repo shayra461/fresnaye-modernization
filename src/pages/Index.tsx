@@ -37,7 +37,51 @@ const services = [
   },
 ];
 
-// Leadership typewriter display component
+// ── Count-up hook with IntersectionObserver ──────────────────────────
+function useCountUp(target: number, duration = 1800) {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setStarted(true); observer.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    let start: number | null = null;
+    const step = (ts: number) => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [started, target, duration]);
+
+  return { ref, count };
+}
+
+// CountUp display component
+function CountUp({ target, suffix = "+", className = "" }: { target: number; suffix?: string; className?: string }) {
+  const { ref, count } = useCountUp(target);
+  return (
+    <span ref={ref} className={className}>
+      {count}{suffix}
+    </span>
+  );
+}
+
+
 function LeadershipTypewriter() {
   const words = ["Leadership Team", "Acceleration Team", "Global Directors", "Board of Advisors"];
   const typed = useTypewriter(words, 75, 2200);
@@ -407,15 +451,21 @@ export default function Index() {
               {/* Inline stats */}
               <div className="flex gap-10 mb-10 border-l-2 border-teal pl-6">
                 <div>
-                  <div className="font-display text-3xl text-white font-semibold">50<span className="text-teal">+</span></div>
+                  <div className="font-display text-3xl text-white font-semibold">
+                    <CountUp target={50} />
+                  </div>
                   <div className="font-body text-xs text-white/50 uppercase tracking-wider mt-1">Years Experience</div>
                 </div>
                 <div>
-                  <div className="font-display text-3xl text-white font-semibold">30<span className="text-teal">+</span></div>
+                  <div className="font-display text-3xl text-white font-semibold">
+                    <CountUp target={30} />
+                  </div>
                   <div className="font-body text-xs text-white/50 uppercase tracking-wider mt-1">Countries Served</div>
                 </div>
                 <div>
-                  <div className="font-display text-3xl text-white font-semibold">100<span className="text-teal">+</span></div>
+                  <div className="font-display text-3xl text-white font-semibold">
+                    <CountUp target={100} />
+                  </div>
                   <div className="font-body text-xs text-white/50 uppercase tracking-wider mt-1">Global Partners</div>
                 </div>
               </div>
@@ -508,8 +558,8 @@ export default function Index() {
             {/* Animated stats */}
             <div className="grid grid-cols-2 gap-px bg-white/10 mb-10">
               {[
-                { num: "50+", label: "Global Partners", delay: "0s" },
-                { num: "12+", label: "Global Offices", delay: "0.2s" },
+                { target: 50, label: "Global Partners", delay: "0s" },
+                { target: 12, label: "Global Offices", delay: "0.2s" },
               ].map((stat) => (
                 <div key={stat.label} className="relative bg-navy-mid py-14 px-8 overflow-hidden group">
                   {/* Animated bg glow */}
@@ -517,11 +567,8 @@ export default function Index() {
                   {/* Corner accent */}
                   <div className="absolute top-3 right-3 w-8 h-8 border-t border-r border-teal/20"
                     style={{ animation: `float-y 5s ease-in-out infinite ${stat.delay}` }} />
-                  <div
-                    className="font-display text-7xl text-teal font-bold mb-3"
-                    style={{ animation: `count-up 0.8s ease-out ${stat.delay} both` }}
-                  >
-                    {stat.num}
+                  <div className="font-display text-7xl text-teal font-bold mb-3">
+                    <CountUp target={stat.target} />
                   </div>
                   <div className="font-body text-xs uppercase tracking-[0.3em] text-white/55 font-semibold">{stat.label}</div>
                   {/* Bottom line animation */}
